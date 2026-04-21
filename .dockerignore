@@ -1,6 +1,7 @@
 # ── Secrets — must never enter the image ──────────────────────
 .Renviron
 .env
+Untitled-*.r
 
 # ── Git / IDE ──────────────────────────────────────────────────
 .git

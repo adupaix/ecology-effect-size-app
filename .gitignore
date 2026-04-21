@@ -47,6 +47,9 @@ vignettes/*.pdf
 # Docker secrets
 .env
 
+# Local scratch scripts (may contain credentials)
+Untitled-*.r
+
 # Docker log volume
 logs/
 

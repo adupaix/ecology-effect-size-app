@@ -89,6 +89,20 @@ body {
   outline: none;
 }
 
+.tooltip {
+  --bs-tooltip-max-width: min(32rem, calc(100vw - 2rem));
+}
+
+.tooltip .tooltip-inner {
+  max-width: min(32rem, calc(100vw - 2rem));
+  max-height: min(18rem, calc(100vh - 6rem));
+  overflow-y: auto;
+  padding: 0.65rem 0.8rem;
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
+}
+
 /* ---- Audit log ------------------------------------------- */
 .audit-action-save   { color: #2e7d32; font-weight: 600; }
 .audit-action-skip   { color: #e65100; font-weight: 600; }
@@ -220,12 +234,30 @@ input[type="number"] {
 }
 
 /* ---- Popover styling for rich tooltips ------------------- */
-.popover {
-  max-width: 360px;
+.popover,
+.review-help-popover {
+  --bs-popover-max-width: min(42rem, calc(100vw - 1rem));
+  width: max-content;
+  max-width: min(42rem, calc(100vw - 1rem)) !important;
   font-size: 0.85rem;
 }
 
-.popover hr {
+.popover .popover-body,
+.review-help-popover .popover-body {
+  min-width: 20rem;
+  width: min(42rem, calc(100vw - 2rem));
+  min-height: 8rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 6rem);
+  overflow: auto;
+  resize: both;
+  padding-right: 0.9rem;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.popover hr,
+.review-help-popover hr {
   margin: 4px 0;
   opacity: 0.3;
 }

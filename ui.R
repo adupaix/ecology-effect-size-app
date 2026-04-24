@@ -15,11 +15,13 @@ ui <- page_fluid(
   useShinyjs(),
   useToastr(),
 
-  # Include custom assets
-  tags$head(
-    tags$link(rel = "stylesheet", href = "custom.css"),
-    tags$script(src = "tooltips.js")
-  ),
+  {
+    asset_version <- format(Sys.time(), "%Y%m%d%H%M%S")
+    tags$head(
+      tags$link(rel = "stylesheet", href = paste0("custom.css?v=", asset_version)),
+      tags$script(src = paste0("tooltips.js?v=", asset_version))
+    )
+  },
 
   # ---- Page router ------------------------------------------
   # uiOutput toggles between the login page and the app shell

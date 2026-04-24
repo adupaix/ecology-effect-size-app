@@ -1012,7 +1012,13 @@ mod_review_server <- function(id, project_id, session_rv,
         ),
         tagList(content),
         placement = "top",
-        options   = list(html = TRUE)
+        options   = list(
+          html = TRUE,
+          container = "body",
+          boundary = "viewport",
+          fallbackPlacements = list("bottom", "right", "left", "top"),
+          customClass = "review-help-popover"
+        )
       )
     }
 

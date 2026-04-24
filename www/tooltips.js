@@ -15,7 +15,11 @@ function initTooltips() {
   tooltipTriggerList.forEach(function (el) {
     // Avoid double-initialisation
     if (!bootstrap.Tooltip.getInstance(el)) {
-      new bootstrap.Tooltip(el);
+      new bootstrap.Tooltip(el, {
+        container: 'body',
+        boundary: document.body,
+        fallbackPlacements: ['bottom', 'right', 'left', 'top']
+      });
     }
   });
 }
@@ -60,4 +64,60 @@ if (!window.__numericWheelGuardBound) {
   }, { capture: true, passive: true });
 
   window.__numericWheelGuardBound = true;
+}
+
+// Keep resizable review popovers anchored correctly after the user drags
+// the resize handle on the popover body.
+if (!window.__reviewPopoverResizeBound) {
+  var reviewPopoverObserver = new ResizeObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var body = entry.target;
+      var triggerId = body.getAttribute('data-popover-trigger-id');
+      if (!triggerId) return;
+
+      var trigger = document.getElementById(triggerId);
+      if (!trigger) return;
+
+      var instance = bootstrap.Popover.getInstance(trigger);
+      if (instance) {
+        instance.update();
+      }
+    });
+  });
+
+  document.addEventListener('shown.bs.popover', function (e) {
+    var trigger = e.target;
+    var popoverId = trigger.getAttribute('aria-describedby');
+    if (!popoverId) return;
+
+    var popover = document.getElementById(popoverId);
+    if (!popover || !popover.classList.contains('review-help-popover')) return;
+
+    if (!trigger.id) {
+      trigger.id = 'review-help-trigger-' + Math.random().toString(36).slice(2, 10);
+    }
+
+    var body = popover.querySelector('.popover-body');
+    if (!body) return;
+
+    body.setAttribute('data-popover-trigger-id', trigger.id);
+    reviewPopoverObserver.observe(body);
+  });
+
+  document.addEventListener('hidden.bs.popover', function (e) {
+    var trigger = e.target;
+    var popoverId = trigger.getAttribute('aria-describedby');
+    if (!popoverId) return;
+
+    var popover = document.getElementById(popoverId);
+    if (!popover) return;
+
+    var body = popover.querySelector('.popover-body');
+    if (!body) return;
+
+    reviewPopoverObserver.unobserve(body);
+    body.removeAttribute('data-popover-trigger-id');
+  });
+
+  window.__reviewPopoverResizeBound = true;
 }
